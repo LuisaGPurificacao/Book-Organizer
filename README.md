@@ -1,2 +1,2 @@
 # Book-Organizer
-Sistema para organizar suas leituras
+:sparkles: Sistema para organizar suas leituras
