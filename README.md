@@ -19,7 +19,7 @@
   - Atualizar usuário
   - Excluir usuário
 
-### Adicionar livro
+### Adicionar Livro
 
 `POST` /book-organizer/livro
 
@@ -58,6 +58,6 @@
 
 ---
 
-### Listar livro por categoria
+### Listar Livro Por Categoria
 
 `GET` /book-organizer/livro
