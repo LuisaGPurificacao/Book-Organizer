@@ -4,11 +4,11 @@
 ## Endpoints
 
 - Livros
-  - [Adicionar livro]('#adicionar-livro')
-  - [Listar livro por categoria]('#listar-livro-por-categoria')
-  - [Listar livro por id]('')
-  - [Atualizar livro]('')
-  - [Excluir livro]('')
+  - [Adicionar livro](#adicionar-livro)
+  - [Listar livro por categoria](#listar-livro-por-categoria)
+  - [Listar livro por id](#listar-livro-por-id)
+  - [Atualizar livro](#atualizar-livro)
+  - [Excluir livro](#exluir-livro)
 - Categorias
   - Adicionar categoria
   - Atualizar categoria
@@ -60,4 +60,62 @@
 
 ### Listar Livro Por Categoria
 
-`GET` /book-organizer/livro
+`GET` /book-organizer/livro/{idCategoria}
+
+**Exemplo de corpo de requisição**
+
+```js
+{
+    id: 1,
+    titulo: "Clean Code",
+    autor: "Luisa Purifica",
+    categoria: {
+      id: 1,
+      nome: "TECNOLOGIA"
+    },
+    quantidade_paginas: 500,
+    pagina_atual: 100,
+    status: 20,
+    avaliacao: 5
+}
+```
+
+**Códigos de Resposta**
+
+| Código | Descrição
+|-|-
+| 200 | Livros retornados de acordo com a categoria com sucesso
+| 404 | Categoria não existe
+
+---
+
+### Listar Livro Por ID
+
+`GET` /book-organizer/livro/{id}
+
+**Exemplo de corpo de requisição**
+
+```js
+{
+    id: 1,
+    titulo: "Clean Code",
+    autor: "Luisa Purifica",
+    categoria: {
+      id: 1,
+      nome: "TECNOLOGIA"
+    },
+    quantidade_paginas: 500,
+    pagina_atual: 100,
+    status: 20,
+    avaliacao: 5
+}
+```
+
+**Códigos de Resposta**
+
+| Código | Descrição
+|-|-
+| 200 | Livro retornado com sucesso
+| 404 | Livro com id informado não existe
+
+---
