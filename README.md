@@ -13,6 +13,10 @@
   - Adicionar categoria
   - Atualizar categoria
   - Excluir categoria
+- Autores
+  - Adicionar autor
+  - Atualizar autor
+  - Excluir autor
 - Usuários
   - Cadastrar usuário
   - Exibir usuário
@@ -21,17 +25,17 @@
 
 ### Adicionar Livro
 
-`POST` /book-organizer/livro
+`POST` /book-organizer/livros
 
 **Campos da requisição**
 
 | Campo            | Tipo   | Obrigatório?| Descrição
 |------------------|--------|:-----------:|-
 |titulo              |String  |sim          |Texto com o titulo do livro com no máximo 230 caracteres.
-|autor         |String  |sim          |Texto com o autor do livro com no máximo 230 caracteres.
+|autor         |Autor  |sim          |Texto com o autor do livro com no máximo 230 caracteres.
 |quantidade_paginas  |int     |sim          |O valor da quantidade de paginas que o livro possui.
-|avaliacao |double     |não          |O valor de 1 a 5 que define a quantidade de estrelas.
-|status        |int  |sim          |O valor da porcentagem de paginas lidas.
+|avaliacao |int     |não          |O valor de 1 a 5 que define a quantidade de estrelas.
+|status        |double  |sim          |O valor da porcentagem de paginas lidas.
 |categoria        |Long  |não          |Texto com a categoria do livro.
 |pagina_atual        |int  |sim          |O valor da quantidade de paginas que o usuario leu.
 
@@ -60,7 +64,7 @@
 
 ### Listar Livro Por Categoria
 
-`GET` /book-organizer/livro/{idCategoria}
+`GET` /book-organizer/livros/{idCategoria}
 
 **Exemplo de corpo de requisição**
 
@@ -91,7 +95,7 @@
 
 ### Listar Livro Por ID
 
-`GET` /book-organizer/livro/{id}
+`GET` /book-organizer/livros/{id}
 
 **Exemplo de corpo de requisição**
 
@@ -122,17 +126,17 @@
 
 ### Atualizar Livro
 
-`PUT` /book-organizer/livro/{id}
+`PUT` /book-organizer/livros/{id}
 
 **Campos da requisição**
 
 | Campo            | Tipo   | Obrigatório?| Descrição
 |------------------|--------|:-----------:|-
 |titulo              |String  |não          |Texto com o titulo do livro com no máximo 230 caracteres.
-|autor         |String  |não          |Texto com o autor do livro com no máximo 230 caracteres.
+|autor         |Autor  |não          |Texto com o autor do livro com no máximo 230 caracteres.
 |quantidade_paginas  |int     |não          |O valor da quantidade de paginas que o livro possui.
-|avaliacao |double     |não          |O valor de 1 a 5 que define a quantidade de estrelas.
-|status        |int  |não          |O valor da porcentagem de paginas lidas.
+|avaliacao |int     |não          |O valor de 1 a 5 que define a quantidade de estrelas.
+|status        |double  |não          |O valor da porcentagem de paginas lidas.
 |categoria        |Long  |não          |Texto com a categoria do livro.
 |pagina_atual        |int  |não          |O valor da quantidade de paginas que o usuario leu.
 
@@ -162,7 +166,7 @@
 
 ### Excluir livro
 
-`DELETE` /book-organizer/livro/{id}
+`DELETE` /book-organizer/livros/{id}
 
 **Códigos de Resposta**
 
