@@ -45,8 +45,12 @@
 ```js
 {
     titulo: "Clean Code",
-    autor: "Luisa Purifica",
-    categoria: "tecnologia",
+    autor: {
+      nome: "Luisa Purifica"
+    },
+    categoria: {
+      nome: "TECNOLOGIA"
+    },
     quantidade_paginas: 500,
     pagina_atual: 100,
     status: 20,
@@ -186,8 +190,12 @@
 ```js
 {
     titulo: "Clean Code",
-    autor: "Luisa Purifica",
-    categoria: "tecnologia",
+    autor: {
+      nome: "Luisa Purifica"
+    },
+    categoria: {
+      nome: "TECNOLOGIA"
+    },
     quantidade_paginas: 550,
     pagina_atual: 110,
     status: 20,
