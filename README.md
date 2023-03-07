@@ -5,6 +5,7 @@
 
 - Livros
   - [Adicionar livro](#adicionar-livro)
+  - [Listar livro por autor](#listar-livro-por-autor)
   - [Listar livro por categoria](#listar-livro-por-categoria)
   - [Listar livro por id](#listar-livro-por-id)
   - [Atualizar livro](#atualizar-livro)
@@ -62,6 +63,40 @@
 
 ---
 
+### Listar Livro Por Autor
+
+`GET` /book-organizer/livros/autor/{idAutor}
+
+**Exemplo de corpo de requisição**
+
+```js
+{
+    id: 1,
+    titulo: "Clean Code",
+    autor: {
+      id: 1,
+      nome: "Luisa Purifica"
+    },
+    categoria: {
+      id: 1,
+      nome: "TECNOLOGIA"
+    },
+    quantidade_paginas: 500,
+    pagina_atual: 100,
+    status: 20,
+    avaliacao: 5
+}
+```
+
+**Códigos de Resposta**
+
+| Código | Descrição
+|-|-
+| 200 | Livros retornados de acordo com a categoria com sucesso
+| 404 | Categoria não existe
+
+---
+
 ### Listar Livro Por Categoria
 
 `GET` /book-organizer/livros/{idCategoria}
@@ -72,7 +107,10 @@
 {
     id: 1,
     titulo: "Clean Code",
-    autor: "Luisa Purifica",
+    autor: {
+      id: 1,
+      nome: "Luisa Purifica"
+    },
     categoria: {
       id: 1,
       nome: "TECNOLOGIA"
@@ -103,7 +141,10 @@
 {
     id: 1,
     titulo: "Clean Code",
-    autor: "Luisa Purifica",
+    autor: {
+      id: 1,
+      nome: "Luisa Purifica"
+    },
     categoria: {
       id: 1,
       nome: "TECNOLOGIA"
