@@ -10,6 +10,6 @@ public class LivroController {
     
     @GetMapping("book-organizer/livros")
     public Livro show(){
-        return new Livro("Clean Code", 500, 5, 25, 120);
+        return new Livro(1, "Clean Code", 500, 5, 100);
     }
 }
