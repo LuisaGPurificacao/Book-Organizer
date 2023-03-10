@@ -37,7 +37,7 @@
 |quantidade_paginas  |int     |sim          |O valor da quantidade de paginas que o livro possui.
 |avaliacao |int     |não          |O valor de 1 a 5 que define a quantidade de estrelas.
 |status        |double  |sim          |O valor da porcentagem de paginas lidas.
-|categoria        |Long  |não          |Texto com a categoria do livro.
+|categoria        |Categoria  |não          |Texto com a categoria do livro.
 |pagina_atual        |int  |sim          |O valor da quantidade de paginas que o usuario leu.
 
 **Exemplo de corpo de requisição**
@@ -182,7 +182,7 @@
 |quantidade_paginas  |int     |não          |O valor da quantidade de paginas que o livro possui.
 |avaliacao |int     |não          |O valor de 1 a 5 que define a quantidade de estrelas.
 |status        |double  |não          |O valor da porcentagem de paginas lidas.
-|categoria        |Long  |não          |Texto com a categoria do livro.
+|categoria        |Categoria  |não          |Texto com a categoria do livro.
 |pagina_atual        |int  |não          |O valor da quantidade de paginas que o usuario leu.
 
 **Exemplo de corpo de requisição**
