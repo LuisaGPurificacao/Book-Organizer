@@ -10,6 +10,6 @@ public class CategoriaController {
     
     @GetMapping("book-organizer/categorias")
     public Categoria show(){
-        return new Categoria(0, "Tecnologia");
+        return new Categoria(2, "Tecnologia");
     }
 }
