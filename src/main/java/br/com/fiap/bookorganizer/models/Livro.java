@@ -8,19 +8,25 @@ public class Livro {
     private int avaliacao;
     private double status;
     private int paginaAtual;
+    private Categoria categoria;
+    private Autor autor;
 
-    public Livro(Integer id, String titulo, int quantidadePaginas, int avaliacao, int paginaAtual) {
+    public Livro(Integer id, String titulo, int quantidadePaginas, int avaliacao, int paginaAtual, Categoria categoria, Autor autor) {
         this.id = id;
         this.titulo = titulo;
         this.quantidadePaginas = quantidadePaginas;
         this.avaliacao = avaliacao;
         this.paginaAtual = paginaAtual;
+        this.categoria = categoria;
+        this.autor = autor;
+        setStatus(quantidadePaginas, paginaAtual);
     }
 
     @Override
     public String toString() {
         return "Livro [id=" + id + ", titulo=" + titulo + ", quantidadePaginas=" + quantidadePaginas + ", avaliacao="
-                + avaliacao + ", status=" + status + ", paginaAtual=" + paginaAtual + "]";
+                + avaliacao + ", status=" + status + ", paginaAtual=" + paginaAtual + ", categoria=" + categoria
+                + ", autor=" + autor + "]";
     }
 
     public Integer getId() {
@@ -50,8 +56,8 @@ public class Livro {
     public double getStatus() {
         return status;
     }
-    public void setStatus(double status) {
-        this.status = status;
+    public void setStatus(int quantidadePaginas, int paginaAtual) {
+        this.status = (paginaAtual*100) / quantidadePaginas;
     }
     public int getPaginaAtual() {
         return paginaAtual;
@@ -59,4 +65,21 @@ public class Livro {
     public void setPaginaAtual(int paginaAtual) {
         this.paginaAtual = paginaAtual;
     }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public Autor getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Autor autor) {
+        this.autor = autor;
+    }
+    
 }
