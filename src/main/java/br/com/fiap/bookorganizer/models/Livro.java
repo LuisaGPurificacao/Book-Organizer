@@ -57,7 +57,7 @@ public class Livro {
         return status;
     }
     public void setStatus(int quantidadePaginas, int paginaAtual) {
-        this.status = (paginaAtual*100) / quantidadePaginas;
+        this.status = ((double)paginaAtual *100) / (double)quantidadePaginas;
     }
     public int getPaginaAtual() {
         return paginaAtual;
