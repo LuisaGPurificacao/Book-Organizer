@@ -40,23 +40,23 @@ public class LivroController {
     @GetMapping("book-organizer/livros/{id}")
     public ResponseEntity<Livro> show(@PathVariable Integer id){
         log.info("buscando livro com id: " + id);
-        var livroEncontrado = livros.stream().filter(d -> d.getId().equals(id)).findFirst();
+        var optionalLivro = livros.stream().filter(d -> d.getId().equals(id)).findFirst();
 
-        if (livroEncontrado.isEmpty())
+        if (optionalLivro.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        return ResponseEntity.ok(livroEncontrado.get());
+        return ResponseEntity.ok(optionalLivro.get());
     }
 
     @DeleteMapping("book-organizer/livros/{id}")
     public ResponseEntity<Livro> delete(@PathVariable Integer id){
         log.info("apagando livro com id: " + id);
-        var livroEncontrado = livros.stream().filter(d -> d.getId().equals(id)).findFirst();
+        var optionalLivro = livros.stream().filter(d -> d.getId().equals(id)).findFirst();
 
-        if (livroEncontrado.isEmpty())
+        if (optionalLivro.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        livros.remove(livroEncontrado.get());
+        livros.remove(optionalLivro.get());
         
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -64,12 +64,12 @@ public class LivroController {
     @PutMapping("book-organizer/livros/{id}")
     public ResponseEntity<Livro> update(@PathVariable Integer id, @RequestBody Livro livro){
         log.info("atualizando livro com id: " + id);
-        var livroEncontrado = livros.stream().filter(d -> d.getId().equals(id)).findFirst();
+        var optionalLivro = livros.stream().filter(d -> d.getId().equals(id)).findFirst();
 
-        if (livroEncontrado.isEmpty())
+        if (optionalLivro.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        livros.remove(livroEncontrado.get());
+        livros.remove(optionalLivro.get());
         livro.setId(id);
         livros.add(livro);
         

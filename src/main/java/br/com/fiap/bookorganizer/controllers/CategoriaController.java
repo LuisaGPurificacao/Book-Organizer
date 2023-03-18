@@ -20,7 +20,7 @@ import br.com.fiap.bookorganizer.models.Categoria;
 @RestController
 public class CategoriaController {
 
-    Logger log = LoggerFactory.getLogger(LivroController.class);
+    Logger log = LoggerFactory.getLogger(CategoriaController.class);
 
     List<Categoria> categorias = new ArrayList<>();
     
@@ -40,23 +40,23 @@ public class CategoriaController {
     @GetMapping("book-organizer/categorias/{id}")
     public ResponseEntity<Categoria> show(@PathVariable Integer id){
         log.info("buscando categoria com id: " + id);
-        var livroEncontrado = categorias.stream().filter(d -> d.getId().equals(id)).findFirst();
+        var optionalCategoria = categorias.stream().filter(d -> d.getId().equals(id)).findFirst();
 
-        if (livroEncontrado.isEmpty())
+        if (optionalCategoria.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        return ResponseEntity.ok(livroEncontrado.get());
+        return ResponseEntity.ok(optionalCategoria.get());
     }
 
     @DeleteMapping("book-organizer/categorias/{id}")
     public ResponseEntity<Categoria> delete(@PathVariable Integer id){
         log.info("apagando categoria com id: " + id);
-        var livroEncontrado = categorias.stream().filter(d -> d.getId().equals(id)).findFirst();
+        var optionalCategoria = categorias.stream().filter(d -> d.getId().equals(id)).findFirst();
 
-        if (livroEncontrado.isEmpty())
+        if (optionalCategoria.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-            categorias.remove(livroEncontrado.get());
+            categorias.remove(optionalCategoria.get());
         
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -64,12 +64,12 @@ public class CategoriaController {
     @PutMapping("book-organizer/categorias/{id}")
     public ResponseEntity<Categoria> update(@PathVariable Integer id, @RequestBody Categoria categoria){
         log.info("atualizando categoria com id: " + id);
-        var livroEncontrado = categorias.stream().filter(d -> d.getId().equals(id)).findFirst();
+        var optionalCategoria = categorias.stream().filter(d -> d.getId().equals(id)).findFirst();
 
-        if (livroEncontrado.isEmpty())
+        if (optionalCategoria.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        categorias.remove(livroEncontrado.get());
+        categorias.remove(optionalCategoria.get());
         categoria.setId(id);
         categorias.add(categoria);
         
