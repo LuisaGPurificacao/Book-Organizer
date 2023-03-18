@@ -14,16 +14,13 @@ public class Usuario {
     private int meta;
     private List<Livro> livros;
 
-    public Usuario(Integer id, String nome, String email, String senha, byte[] fotoPerfil, int quantidadeLivrosLidos,
-            int meta, List<Livro> livros) {
+    public Usuario(Integer id, String nome, String email, String senha,
+            int meta) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.fotoPerfil = fotoPerfil;
-        this.quantidadeLivrosLidos = quantidadeLivrosLidos;
         this.meta = meta;
-        this.livros = livros;
     }
 
     @Override
