@@ -1,9 +1,20 @@
 package br.com.fiap.bookorganizer.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Autor {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
+
+    protected Autor() {
+    }
 
     public Autor(Integer id, String nome) {
         this.id = id;

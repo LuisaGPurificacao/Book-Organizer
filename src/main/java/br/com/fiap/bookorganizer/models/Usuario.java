@@ -3,8 +3,16 @@ package br.com.fiap.bookorganizer.models;
 import java.util.Arrays;
 import java.util.List;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Usuario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
     private String email;
@@ -13,6 +21,9 @@ public class Usuario {
     private int quantidadeLivrosLidos;
     private int meta;
     private List<Livro> livros;
+
+    protected Usuario() {
+    }
 
     public Usuario(Integer id, String nome, String email, String senha,
             int meta) {
