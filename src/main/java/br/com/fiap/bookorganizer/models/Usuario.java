@@ -20,7 +20,7 @@ public class Usuario {
     private byte[] fotoPerfil;
     private int quantidadeLivrosLidos;
     private int meta;
-    private List<Livro> livros;
+    //private List<Livro> livros;
 
     protected Usuario() {
     }
@@ -38,7 +38,8 @@ public class Usuario {
     public String toString() {
         return "Usuario [id=" + id + ", nome=" + nome + ", email=" + email + ", senha=" + senha + ", fotoPerfil="
                 + Arrays.toString(fotoPerfil) + ", quantidadeLivrosLidos=" + quantidadeLivrosLidos + ", meta=" + meta
-                + ", livros=" + livros + "]";
+                + ", livros="; 
+                //livros + "]";
     }
 
     public Integer getId() {
@@ -96,7 +97,7 @@ public class Usuario {
     public void setMeta(int meta) {
         this.meta = meta;
     }
-
+/**
     public List<Livro> getLivros() {
         return livros;
     }
@@ -104,5 +105,5 @@ public class Usuario {
     public void setLivros(List<Livro> livros) {
         this.livros = livros;
     }
-
+**/
 }
