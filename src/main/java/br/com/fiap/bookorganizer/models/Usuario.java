@@ -1,6 +1,5 @@
 package br.com.fiap.bookorganizer.models;
 
-import java.util.Arrays;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -17,16 +16,13 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
-    private byte[] fotoPerfil;
-    private int quantidadeLivrosLidos;
+    private String fotoPerfil;
     private int meta;
     //private List<Livro> livros;
 
-    protected Usuario() {
-    }
+    protected Usuario() {}
 
-    public Usuario(Integer id, String nome, String email, String senha,
-            int meta) {
+    public Usuario(Integer id, String nome, String email, String senha, int meta) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -37,9 +33,7 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuario [id=" + id + ", nome=" + nome + ", email=" + email + ", senha=" + senha + ", fotoPerfil="
-                + Arrays.toString(fotoPerfil) + ", quantidadeLivrosLidos=" + quantidadeLivrosLidos + ", meta=" + meta
-                + ", livros="; 
-                //livros + "]";
+                + fotoPerfil + ", meta=" + meta + ", livros="; //+ livros + "]";
     }
 
     public Integer getId() {
@@ -74,20 +68,12 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public byte[] getFotoPerfil() {
+    public String getFotoPerfil() {
         return fotoPerfil;
     }
 
-    public void setFotoPerfil(byte[] fotoPerfil) {
+    public void setFotoPerfil(String fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
-    }
-
-    public int getQuantidadeLivrosLidos() {
-        return quantidadeLivrosLidos;
-    }
-
-    public void setQuantidadeLivrosLidos(int quantidadeLivrosLidos) {
-        this.quantidadeLivrosLidos = quantidadeLivrosLidos;
     }
 
     public int getMeta() {
@@ -97,7 +83,7 @@ public class Usuario {
     public void setMeta(int meta) {
         this.meta = meta;
     }
-/**
+/*
     public List<Livro> getLivros() {
         return livros;
     }
@@ -105,5 +91,5 @@ public class Usuario {
     public void setLivros(List<Livro> livros) {
         this.livros = livros;
     }
-**/
+*/
 }

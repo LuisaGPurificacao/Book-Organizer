@@ -13,8 +13,7 @@ public class Autor {
     private Integer id;
     private String nome;
 
-    protected Autor() {
-    }
+    protected Autor() {}
 
     public Autor(Integer id, String nome) {
         this.id = id;

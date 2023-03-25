@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fiap.bookorganizer.models.Usuario;
 import br.com.fiap.bookorganizer.repositories.UsuarioRepository;
 
 @RestController
+@RequestMapping("book-organizer/usuarios")
 public class UsuarioController {
 
     Logger log = LoggerFactory.getLogger(UsuarioController.class);
@@ -27,53 +29,53 @@ public class UsuarioController {
     @Autowired
     UsuarioRepository repository;
 
-    @GetMapping("book-organizer/usuarios")
+    @GetMapping
     public List<Usuario> index() {
         return repository.findAll();
     }
 
-    @PostMapping("book-organizer/usuarios")
+    @PostMapping
     public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
         log.info("cadastrando usuário: " + usuario);
         repository.save(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
     }
 
-    @GetMapping("book-organizer/usuarios/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<Usuario> show(@PathVariable Integer id) {
         log.info("buscando usuário com id: " + id);
         Optional<Usuario> optionalUsuario = repository.findById(id);
 
         if (optionalUsuario.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(optionalUsuario.get());
     }
 
-    @DeleteMapping("book-organizer/usuarios/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Usuario> delete(@PathVariable Integer id) {
         log.info("apagando usuário com id: " + id);
 
         if (!repository.existsById(id))
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.notFound().build();
 
         repository.deleteById(id);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("book-organizer/usuarios/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<Usuario> update(@PathVariable Integer id, @RequestBody Usuario usuario) {
         log.info("atualizando usuário com id: " + id);
         Optional<Usuario> optionalUsuario = repository.findById(id);
 
         if (optionalUsuario.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.notFound().build();
 
         usuario.setId(id);
         repository.save(usuario);
 
-        return ResponseEntity.status(HttpStatus.OK).body(usuario);
+        return ResponseEntity.ok(usuario);
     }
 
 }
