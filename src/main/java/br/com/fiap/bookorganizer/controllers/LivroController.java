@@ -1,10 +1,11 @@
 package br.com.fiap.bookorganizer.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,66 +14,67 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fiap.bookorganizer.models.Livro;
+import br.com.fiap.bookorganizer.repositories.LivroRepository;
 
 @RestController
+@RequestMapping("book-organizer/livros")
 public class LivroController {
 
     Logger log = LoggerFactory.getLogger(LivroController.class);
 
-    List<Livro> livros = new ArrayList<>();
+    @Autowired
+    LivroRepository repository;
     
-    @GetMapping("book-organizer/livros")
+    @GetMapping
     public List<Livro> index(){
-        return livros;
+        return repository.findAll();
     }
 
-    @PostMapping("book-organizer/livros")
+    @PostMapping
     public ResponseEntity<Livro> create(@RequestBody Livro livro){
         log.info("cadastrando livro: " + livro);
-        livro.setId(livros.size() + 1);
-        livros.add(livro);
+        repository.save(livro);
         return ResponseEntity.status(HttpStatus.CREATED).body(livro);
     }
 
-    @GetMapping("book-organizer/livros/{id}")
-    public ResponseEntity<Livro> show(@PathVariable Integer id){
+    @GetMapping("{id}")
+    public ResponseEntity<Livro> show(@PathVariable Long id){
         log.info("buscando livro com id: " + id);
-        var optionalLivro = livros.stream().filter(d -> d.getId().equals(id)).findFirst();
+        Optional<Livro> optionalLivro = repository.findById(id);
 
         if (optionalLivro.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(optionalLivro.get());
     }
 
-    @DeleteMapping("book-organizer/livros/{id}")
-    public ResponseEntity<Livro> delete(@PathVariable Integer id){
+    @DeleteMapping("{id}")
+    public ResponseEntity<Livro> delete(@PathVariable Long id){
         log.info("apagando livro com id: " + id);
-        var optionalLivro = livros.stream().filter(d -> d.getId().equals(id)).findFirst();
 
-        if (optionalLivro.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (!repository.existsById(id))
+            return ResponseEntity.notFound().build();
 
-        livros.remove(optionalLivro.get());
+        repository.deleteById(id);
         
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("book-organizer/livros/{id}")
-    public ResponseEntity<Livro> update(@PathVariable Integer id, @RequestBody Livro livro){
+    @PutMapping("{id}")
+    public ResponseEntity<Livro> update(@PathVariable Long id, @RequestBody Livro livro){
         log.info("atualizando livro com id: " + id);
-        var optionalLivro = livros.stream().filter(d -> d.getId().equals(id)).findFirst();
+        var optionalLivro = repository.findById(id);
 
         if (optionalLivro.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.notFound().build();
 
-        livros.remove(optionalLivro.get());
         livro.setId(id);
-        livros.add(livro);
+        repository.save(livro);
         
-        return ResponseEntity.status(HttpStatus.OK).body(livro);
+        return ResponseEntity.ok(livro);
     }
 }

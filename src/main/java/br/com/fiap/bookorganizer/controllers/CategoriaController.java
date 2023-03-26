@@ -1,10 +1,11 @@
 package br.com.fiap.bookorganizer.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,66 +14,67 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fiap.bookorganizer.models.Categoria;
+import br.com.fiap.bookorganizer.repositories.CategoriaRepository;
 
 @RestController
+@RequestMapping("book-organizer/categorias")
 public class CategoriaController {
 
     Logger log = LoggerFactory.getLogger(CategoriaController.class);
-
-    List<Categoria> categorias = new ArrayList<>();
     
-    @GetMapping("book-organizer/categorias")
+    @Autowired
+    CategoriaRepository repository;
+
+    @GetMapping
     public List<Categoria> index(){
-        return categorias;
+        return repository.findAll();
     }
 
-    @PostMapping("book-organizer/categorias")
+    @PostMapping
     public ResponseEntity<Categoria> create(@RequestBody Categoria categoria){
         log.info("cadastrando categoria: " + categoria);
-        categoria.setId(categorias.size() + 1);
-        categorias.add(categoria);
+        repository.save(categoria);
         return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
     }
 
-    @GetMapping("book-organizer/categorias/{id}")
-    public ResponseEntity<Categoria> show(@PathVariable Integer id){
+    @GetMapping("{id}")
+    public ResponseEntity<Categoria> show(@PathVariable Long id){
         log.info("buscando categoria com id: " + id);
-        var optionalCategoria = categorias.stream().filter(d -> d.getId().equals(id)).findFirst();
+        Optional<Categoria> optionalCategoria = repository.findById(id);
 
         if (optionalCategoria.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(optionalCategoria.get());
     }
 
-    @DeleteMapping("book-organizer/categorias/{id}")
-    public ResponseEntity<Categoria> delete(@PathVariable Integer id){
+    @DeleteMapping("{id}")
+    public ResponseEntity<Categoria> delete(@PathVariable Long id){
         log.info("apagando categoria com id: " + id);
-        var optionalCategoria = categorias.stream().filter(d -> d.getId().equals(id)).findFirst();
 
-        if (optionalCategoria.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (!repository.existsById(id))
+            return ResponseEntity.notFound().build();
 
-            categorias.remove(optionalCategoria.get());
+            repository.deleteById(id);;
         
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("book-organizer/categorias/{id}")
-    public ResponseEntity<Categoria> update(@PathVariable Integer id, @RequestBody Categoria categoria){
+    @PutMapping("{id}")
+    public ResponseEntity<Categoria> update(@PathVariable Long id, @RequestBody Categoria categoria){
         log.info("atualizando categoria com id: " + id);
-        var optionalCategoria = categorias.stream().filter(d -> d.getId().equals(id)).findFirst();
+        var optionalCategoria = repository.findById(id);
 
         if (optionalCategoria.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.notFound().build();
 
-        categorias.remove(optionalCategoria.get());
         categoria.setId(id);
-        categorias.add(categoria);
+        repository.save(categoria);
         
-        return ResponseEntity.status(HttpStatus.OK).body(categoria);
+        return ResponseEntity.ok(categoria);
     }
 }

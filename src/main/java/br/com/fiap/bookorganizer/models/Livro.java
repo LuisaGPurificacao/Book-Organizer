@@ -1,38 +1,47 @@
 package br.com.fiap.bookorganizer.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Livro {
     
-    private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String titulo;
     private int quantidadePaginas;
     private int avaliacao;
     private double status;
     private int paginaAtual;
-    private Categoria categoria;
-    private Autor autor;
+    //private Categoria categoria;
+    //private Autor autor;
 
-    public Livro(Integer id, String titulo, int quantidadePaginas, int avaliacao, int paginaAtual, Categoria categoria, Autor autor) {
+    protected Livro() {}
+
+    public Livro(Long id, String titulo, int quantidadePaginas, int avaliacao, int paginaAtual, Categoria categoria, Autor autor) {
         this.id = id;
         this.titulo = titulo;
         this.quantidadePaginas = quantidadePaginas;
         this.avaliacao = avaliacao;
         this.paginaAtual = paginaAtual;
-        this.categoria = categoria;
-        this.autor = autor;
+        //this.categoria = categoria;
+        //this.autor = autor;
         setStatus(quantidadePaginas, paginaAtual);
     }
 
     @Override
     public String toString() {
         return "Livro [id=" + id + ", titulo=" + titulo + ", quantidadePaginas=" + quantidadePaginas + ", avaliacao="
-                + avaliacao + ", status=" + status + ", paginaAtual=" + paginaAtual + ", categoria=" + categoria
-                + ", autor=" + autor + "]";
+                + avaliacao + ", status=" + status + ", paginaAtual=" + paginaAtual + "]";
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getTitulo() {
@@ -65,7 +74,7 @@ public class Livro {
     public void setPaginaAtual(int paginaAtual) {
         this.paginaAtual = paginaAtual;
     }
-
+/* 
     public Categoria getCategoria() {
         return categoria;
     }
@@ -81,5 +90,5 @@ public class Livro {
     public void setAutor(Autor autor) {
         this.autor = autor;
     }
-    
+*/    
 }
