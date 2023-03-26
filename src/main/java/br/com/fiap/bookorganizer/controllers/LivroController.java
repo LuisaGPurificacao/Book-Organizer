@@ -42,7 +42,7 @@ public class LivroController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Livro> show(@PathVariable Integer id){
+    public ResponseEntity<Livro> show(@PathVariable Long id){
         log.info("buscando livro com id: " + id);
         Optional<Livro> optionalLivro = repository.findById(id);
 
@@ -53,7 +53,7 @@ public class LivroController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Livro> delete(@PathVariable Integer id){
+    public ResponseEntity<Livro> delete(@PathVariable Long id){
         log.info("apagando livro com id: " + id);
 
         if (!repository.existsById(id))
@@ -65,7 +65,7 @@ public class LivroController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Livro> update(@PathVariable Integer id, @RequestBody Livro livro){
+    public ResponseEntity<Livro> update(@PathVariable Long id, @RequestBody Livro livro){
         log.info("atualizando livro com id: " + id);
         var optionalLivro = repository.findById(id);
 

@@ -42,7 +42,7 @@ public class AutorController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Autor> show(@PathVariable Integer id){
+    public ResponseEntity<Autor> show(@PathVariable Long id){
         log.info("buscando autor com id: " + id);
         Optional<Autor> optionalAutor = repository.findById(id);
 
@@ -53,7 +53,7 @@ public class AutorController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Autor> delete(@PathVariable Integer id){
+    public ResponseEntity<Autor> delete(@PathVariable Long id){
         log.info("apagando autor com id: " + id);
 
         if (!repository.existsById(id))
@@ -65,7 +65,7 @@ public class AutorController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Autor> update(@PathVariable Integer id, @RequestBody Autor autor){
+    public ResponseEntity<Autor> update(@PathVariable Long id, @RequestBody Autor autor){
         log.info("atualizando autor com id: " + id);
         var optionalAutor = repository.findById(id);
 

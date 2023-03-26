@@ -42,7 +42,7 @@ public class CategoriaController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Categoria> show(@PathVariable Integer id){
+    public ResponseEntity<Categoria> show(@PathVariable Long id){
         log.info("buscando categoria com id: " + id);
         Optional<Categoria> optionalCategoria = repository.findById(id);
 
@@ -53,7 +53,7 @@ public class CategoriaController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Categoria> delete(@PathVariable Integer id){
+    public ResponseEntity<Categoria> delete(@PathVariable Long id){
         log.info("apagando categoria com id: " + id);
 
         if (!repository.existsById(id))
@@ -65,7 +65,7 @@ public class CategoriaController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Categoria> update(@PathVariable Integer id, @RequestBody Categoria categoria){
+    public ResponseEntity<Categoria> update(@PathVariable Long id, @RequestBody Categoria categoria){
         log.info("atualizando categoria com id: " + id);
         var optionalCategoria = repository.findById(id);
 

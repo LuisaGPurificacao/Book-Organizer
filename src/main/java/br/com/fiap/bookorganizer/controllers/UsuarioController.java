@@ -42,7 +42,7 @@ public class UsuarioController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Usuario> show(@PathVariable Integer id) {
+    public ResponseEntity<Usuario> show(@PathVariable Long id) {
         log.info("buscando usuário com id: " + id);
         Optional<Usuario> optionalUsuario = repository.findById(id);
 
@@ -53,7 +53,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Usuario> delete(@PathVariable Integer id) {
+    public ResponseEntity<Usuario> delete(@PathVariable Long id) {
         log.info("apagando usuário com id: " + id);
 
         if (!repository.existsById(id))
@@ -65,7 +65,7 @@ public class UsuarioController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Integer id, @RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario usuario) {
         log.info("atualizando usuário com id: " + id);
         Optional<Usuario> optionalUsuario = repository.findById(id);
 

@@ -10,7 +10,7 @@ public class Livro {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String titulo;
     private int quantidadePaginas;
     private int avaliacao;
@@ -21,7 +21,7 @@ public class Livro {
 
     protected Livro() {}
 
-    public Livro(Integer id, String titulo, int quantidadePaginas, int avaliacao, int paginaAtual, Categoria categoria, Autor autor) {
+    public Livro(Long id, String titulo, int quantidadePaginas, int avaliacao, int paginaAtual, Categoria categoria, Autor autor) {
         this.id = id;
         this.titulo = titulo;
         this.quantidadePaginas = quantidadePaginas;
@@ -38,10 +38,10 @@ public class Livro {
                 + avaliacao + ", status=" + status + ", paginaAtual=" + paginaAtual + "]";
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getTitulo() {
