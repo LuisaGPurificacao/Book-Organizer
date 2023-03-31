@@ -4,6 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Livro {
@@ -11,10 +15,19 @@ public class Livro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @NotBlank @Size(min = 5, max = 100)
     private String titulo;
+    
+    @NotNull @Min(value = 0, message = "deve ser maior que zero")
     private int quantidadePaginas;
+    
     private int avaliacao;
+    
+    @NotNull
     private double status;
+    
+    @NotNull @Min(value = 0, message = "deve ser maior que zero")
     private int paginaAtual;
     //private Categoria categoria;
     //private Autor autor;
