@@ -1,7 +1,6 @@
 package br.com.fiap.bookorganizer.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.fiap.bookorganizer.exception.RestNotFoundException;
 import br.com.fiap.bookorganizer.models.Livro;
 import br.com.fiap.bookorganizer.repositories.LivroRepository;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("book-organizer/livros")
@@ -35,7 +36,7 @@ public class LivroController {
     }
 
     @PostMapping
-    public ResponseEntity<Livro> create(@RequestBody Livro livro){
+    public ResponseEntity<Livro> create(@RequestBody @Valid Livro livro){
         log.info("cadastrando livro: " + livro);
         repository.save(livro);
         return ResponseEntity.status(HttpStatus.CREATED).body(livro);
@@ -44,37 +45,33 @@ public class LivroController {
     @GetMapping("{id}")
     public ResponseEntity<Livro> show(@PathVariable Long id){
         log.info("buscando livro com id: " + id);
-        Optional<Livro> optionalLivro = repository.findById(id);
+        var livro = getLivro(id);
 
-        if (optionalLivro.isEmpty())
-            return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(optionalLivro.get());
+        return ResponseEntity.ok(livro);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Livro> delete(@PathVariable Long id){
         log.info("apagando livro com id: " + id);
 
-        if (!repository.existsById(id))
-            return ResponseEntity.notFound().build();
+        var livro = getLivro(id);
+        repository.delete(livro);
 
-        repository.deleteById(id);
-        
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Livro> update(@PathVariable Long id, @RequestBody Livro livro){
+    public ResponseEntity<Livro> update(@PathVariable Long id, @RequestBody @Valid Livro livro){
         log.info("atualizando livro com id: " + id);
-        var optionalLivro = repository.findById(id);
-
-        if (optionalLivro.isEmpty())
-            return ResponseEntity.notFound().build();
+        getLivro(id);
 
         livro.setId(id);
         repository.save(livro);
         
         return ResponseEntity.ok(livro);
+    }
+
+    private Livro getLivro(Long id){
+        return repository.findById(id).orElseThrow(() -> new RestNotFoundException("livro não encontrado"));
     }
 }
