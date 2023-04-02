@@ -1,7 +1,6 @@
 package br.com.fiap.bookorganizer.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.fiap.bookorganizer.exception.RestNotFoundException;
 import br.com.fiap.bookorganizer.models.Categoria;
 import br.com.fiap.bookorganizer.repositories.CategoriaRepository;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("book-organizer/categorias")
@@ -35,7 +36,7 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> create(@RequestBody Categoria categoria){
+    public ResponseEntity<Categoria> create(@RequestBody @Valid Categoria categoria){
         log.info("cadastrando categoria: " + categoria);
         repository.save(categoria);
         return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
@@ -44,37 +45,33 @@ public class CategoriaController {
     @GetMapping("{id}")
     public ResponseEntity<Categoria> show(@PathVariable Long id){
         log.info("buscando categoria com id: " + id);
-        Optional<Categoria> optionalCategoria = repository.findById(id);
+        var categoria = getCategoria(id);
 
-        if (optionalCategoria.isEmpty())
-            return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(optionalCategoria.get());
+        return ResponseEntity.ok(categoria);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Categoria> delete(@PathVariable Long id){
         log.info("apagando categoria com id: " + id);
 
-        if (!repository.existsById(id))
-            return ResponseEntity.notFound().build();
+        var categoria = getCategoria(id);
+        repository.delete(categoria);
 
-            repository.deleteById(id);;
-        
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Categoria> update(@PathVariable Long id, @RequestBody Categoria categoria){
+    public ResponseEntity<Categoria> update(@PathVariable Long id, @RequestBody @Valid Categoria categoria){
         log.info("atualizando categoria com id: " + id);
-        var optionalCategoria = repository.findById(id);
-
-        if (optionalCategoria.isEmpty())
-            return ResponseEntity.notFound().build();
+        getCategoria(id);
 
         categoria.setId(id);
         repository.save(categoria);
         
         return ResponseEntity.ok(categoria);
+    }
+
+    private Categoria getCategoria(Long id){
+        return repository.findById(id).orElseThrow(() -> new RestNotFoundException("categoria não encontrada"));
     }
 }

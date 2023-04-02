@@ -1,7 +1,6 @@
 package br.com.fiap.bookorganizer.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.fiap.bookorganizer.exception.RestNotFoundException;
 import br.com.fiap.bookorganizer.models.Usuario;
 import br.com.fiap.bookorganizer.repositories.UsuarioRepository;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("book-organizer/usuarios")
@@ -35,7 +36,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> create(@RequestBody @Valid Usuario usuario) {
         log.info("cadastrando usuário: " + usuario);
         repository.save(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
@@ -44,20 +45,17 @@ public class UsuarioController {
     @GetMapping("{id}")
     public ResponseEntity<Usuario> show(@PathVariable Long id) {
         log.info("buscando usuário com id: " + id);
-        Optional<Usuario> optionalUsuario = repository.findById(id);
 
-        if (optionalUsuario.isEmpty())
-            return ResponseEntity.notFound().build();
+        var usuario = getUsuario(id);
 
-        return ResponseEntity.ok(optionalUsuario.get());
+        return ResponseEntity.ok(usuario);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Usuario> delete(@PathVariable Long id) {
         log.info("apagando usuário com id: " + id);
 
-        if (!repository.existsById(id))
-            return ResponseEntity.notFound().build();
+        getUsuario(id);
 
         repository.deleteById(id);
 
@@ -65,17 +63,19 @@ public class UsuarioController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody @Valid Usuario usuario) {
         log.info("atualizando usuário com id: " + id);
-        Optional<Usuario> optionalUsuario = repository.findById(id);
-
-        if (optionalUsuario.isEmpty())
-            return ResponseEntity.notFound().build();
+        
+        getUsuario(id);
 
         usuario.setId(id);
         repository.save(usuario);
 
         return ResponseEntity.ok(usuario);
+    }
+
+    private Usuario getUsuario(Long id){
+        return repository.findById(id).orElseThrow(() -> new RestNotFoundException("Usuário não encontrado"));
     }
 
 }
