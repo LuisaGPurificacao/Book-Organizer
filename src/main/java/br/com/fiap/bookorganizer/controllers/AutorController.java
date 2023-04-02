@@ -1,7 +1,6 @@
 package br.com.fiap.bookorganizer.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.fiap.bookorganizer.exception.RestNotFoundException;
 import br.com.fiap.bookorganizer.models.Autor;
 import br.com.fiap.bookorganizer.repositories.AutorRepository;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("book-organizer/autores")
@@ -35,7 +36,7 @@ public class AutorController {
     }
     
     @PostMapping
-    public ResponseEntity<Autor> create(@RequestBody Autor autor){
+    public ResponseEntity<Autor> create(@RequestBody @Valid Autor autor){
         log.info("cadastrando autor: " + autor);
         repository.save(autor);
         return ResponseEntity.status(HttpStatus.CREATED).body(autor);
@@ -44,20 +45,17 @@ public class AutorController {
     @GetMapping("{id}")
     public ResponseEntity<Autor> show(@PathVariable Long id){
         log.info("buscando autor com id: " + id);
-        Optional<Autor> optionalAutor = repository.findById(id);
+        
+        var autor = getAutor(id);
 
-        if (optionalAutor.isEmpty())
-            return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(optionalAutor.get());
+        return ResponseEntity.ok(autor);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Autor> delete(@PathVariable Long id){
         log.info("apagando autor com id: " + id);
 
-        if (!repository.existsById(id))
-            return ResponseEntity.notFound().build();
+        getAutor(id);
 
         repository.deleteById(id);
         
@@ -65,17 +63,19 @@ public class AutorController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Autor> update(@PathVariable Long id, @RequestBody Autor autor){
+    public ResponseEntity<Autor> update(@PathVariable Long id, @RequestBody @Valid Autor autor){
         log.info("atualizando autor com id: " + id);
-        var optionalAutor = repository.findById(id);
-
-        if (optionalAutor.isEmpty())
-            return ResponseEntity.notFound().build();
+        
+        getAutor(id);
 
         autor.setId(id);
         repository.save(autor);
         
         return ResponseEntity.ok(autor);
+    }
+
+    private Autor getAutor(Long id){
+        return repository.findById(id).orElseThrow(() -> new RestNotFoundException("Autor não encontrado"));
     }
 
 }
