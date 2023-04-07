@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 @RequestMapping("book-organizer/categorias")
 public class CategoriaController {
 
-    Logger log = LoggerFactory.getLogger(CategoriaController.class);
+    Logger log = LoggerFactory.getLogger(getClass());
     
     @Autowired
     CategoriaRepository repository;
@@ -45,18 +45,13 @@ public class CategoriaController {
     @GetMapping("{id}")
     public ResponseEntity<Categoria> show(@PathVariable Long id){
         log.info("buscando categoria com id: " + id);
-        var categoria = getCategoria(id);
-
-        return ResponseEntity.ok(categoria);
+        return ResponseEntity.ok(getCategoria(id));
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Categoria> delete(@PathVariable Long id){
         log.info("apagando categoria com id: " + id);
-
-        var categoria = getCategoria(id);
-        repository.delete(categoria);
-
+        repository.delete(getCategoria(id));
         return ResponseEntity.noContent().build();
     }
 
@@ -64,10 +59,8 @@ public class CategoriaController {
     public ResponseEntity<Categoria> update(@PathVariable Long id, @RequestBody @Valid Categoria categoria){
         log.info("atualizando categoria com id: " + id);
         getCategoria(id);
-
         categoria.setId(id);
         repository.save(categoria);
-        
         return ResponseEntity.ok(categoria);
     }
 
