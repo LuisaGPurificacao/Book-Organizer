@@ -6,7 +6,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Categoria {
 
@@ -17,29 +23,4 @@ public class Categoria {
     @NotBlank(message = "O nome é obrigatório")
     @Size(min = 5, max = 100, message = "O nome tem que ter no mínimo 5 caracteres e no máximo 100")
     private String nome;
-
-    protected Categoria() {}
-
-    public Categoria(Long id, String nome) {
-        this.id = id;
-        this.nome = nome;
-    }
-
-    @Override
-    public String toString() {
-        return "Categoria [id=" + id + ", nome=" + nome + "]";
-    }
-    
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public String getNome() {
-        return nome;
-    }
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 }

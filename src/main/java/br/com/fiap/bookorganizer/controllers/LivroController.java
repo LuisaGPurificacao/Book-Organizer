@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 @RequestMapping("book-organizer/livros")
 public class LivroController {
 
-    Logger log = LoggerFactory.getLogger(LivroController.class);
+    Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     LivroRepository repository;
@@ -45,18 +45,13 @@ public class LivroController {
     @GetMapping("{id}")
     public ResponseEntity<Livro> show(@PathVariable Long id){
         log.info("buscando livro com id: " + id);
-        var livro = getLivro(id);
-
-        return ResponseEntity.ok(livro);
+        return ResponseEntity.ok(getLivro(id));
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Livro> delete(@PathVariable Long id){
         log.info("apagando livro com id: " + id);
-
-        var livro = getLivro(id);
-        repository.delete(livro);
-
+        repository.delete(getLivro(id));
         return ResponseEntity.noContent().build();
     }
 
@@ -64,10 +59,8 @@ public class LivroController {
     public ResponseEntity<Livro> update(@PathVariable Long id, @RequestBody @Valid Livro livro){
         log.info("atualizando livro com id: " + id);
         getLivro(id);
-
         livro.setId(id);
         repository.save(livro);
-        
         return ResponseEntity.ok(livro);
     }
 
