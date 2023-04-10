@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 @RequestMapping("book-organizer/autores")
 public class AutorController {
 
-    Logger log = LoggerFactory.getLogger(LivroController.class);
+    Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     AutorRepository repository;
@@ -45,32 +45,22 @@ public class AutorController {
     @GetMapping("{id}")
     public ResponseEntity<Autor> show(@PathVariable Long id){
         log.info("buscando autor com id: " + id);
-        
-        var autor = getAutor(id);
-
-        return ResponseEntity.ok(autor);
+        return ResponseEntity.ok(getAutor(id));
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Autor> delete(@PathVariable Long id){
         log.info("apagando autor com id: " + id);
-
-        getAutor(id);
-
-        repository.deleteById(id);
-        
+        repository.delete(getAutor(id));
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{id}")
     public ResponseEntity<Autor> update(@PathVariable Long id, @RequestBody @Valid Autor autor){
         log.info("atualizando autor com id: " + id);
-        
         getAutor(id);
-
         autor.setId(id);
         repository.save(autor);
-        
         return ResponseEntity.ok(autor);
     }
 

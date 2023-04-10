@@ -45,32 +45,22 @@ public class UsuarioController {
     @GetMapping("{id}")
     public ResponseEntity<Usuario> show(@PathVariable Long id) {
         log.info("buscando usuário com id: " + id);
-
-        var usuario = getUsuario(id);
-
-        return ResponseEntity.ok(usuario);
+        return ResponseEntity.ok(getUsuario(id));
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Usuario> delete(@PathVariable Long id) {
         log.info("apagando usuário com id: " + id);
-
-        getUsuario(id);
-
-        repository.deleteById(id);
-
+        repository.delete(getUsuario(id));
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{id}")
     public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody @Valid Usuario usuario) {
         log.info("atualizando usuário com id: " + id);
-        
         getUsuario(id);
-
         usuario.setId(id);
         repository.save(usuario);
-
         return ResponseEntity.ok(usuario);
     }
 
