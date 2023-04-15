@@ -8,7 +8,9 @@ import br.com.fiap.bookorganizer.models.Livro;
 
 public interface LivroRepository extends JpaRepository<Livro, Long>{
 
-    Page<Livro> findByCategoria(String categoria, Pageable pageable);
+    Page<Livro> findByCategoriaNomeContainingAndAutorNomeContaining(String categoria, String autor, Pageable pageable);
 
-    Page<Livro> findByAutor(String autor, Pageable pageable);
+    Page<Livro> findByAutorNomeContaining(String autor, Pageable pageable);
+
+    Page<Livro> findByCategoriaNomeContaining(String categoria, Pageable pageable);
 }
