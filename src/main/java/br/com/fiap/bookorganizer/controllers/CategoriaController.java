@@ -5,7 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,21 +31,21 @@ public class CategoriaController {
     CategoriaRepository repository;
 
     @GetMapping
-    public List<Categoria> index(){
-        return repository.findAll();
+    public List<EntityModel<Categoria>> index(){
+        return repository.findAll().stream().map(Categoria::toEntityModel).toList();
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> create(@RequestBody @Valid Categoria categoria){
+    public ResponseEntity<Object> create(@RequestBody @Valid Categoria categoria){
         log.info("cadastrando categoria: " + categoria);
         repository.save(categoria);
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
+        return ResponseEntity.created(categoria.toEntityModel().getRequiredLink("self").toUri()).body(categoria.toEntityModel());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Categoria> show(@PathVariable Long id){
+    public EntityModel<Categoria> show(@PathVariable Long id){
         log.info("buscando categoria com id: " + id);
-        return ResponseEntity.ok(getCategoria(id));
+        return getCategoria(id).toEntityModel();
     }
 
     @DeleteMapping("{id}")
@@ -56,12 +56,12 @@ public class CategoriaController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Categoria> update(@PathVariable Long id, @RequestBody @Valid Categoria categoria){
+    public EntityModel<Categoria> update(@PathVariable Long id, @RequestBody @Valid Categoria categoria){
         log.info("atualizando categoria com id: " + id);
         getCategoria(id);
         categoria.setId(id);
         repository.save(categoria);
-        return ResponseEntity.ok(categoria);
+        return categoria.toEntityModel();
     }
 
     private Categoria getCategoria(Long id){
