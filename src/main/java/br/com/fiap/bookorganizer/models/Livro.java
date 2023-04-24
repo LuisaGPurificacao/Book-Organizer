@@ -13,13 +13,21 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.EntityModel;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
+
+import br.com.fiap.bookorganizer.controllers.LivroController;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Builder
-public class Livro {
+public class Livro extends EntityModel<Livro> {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +39,7 @@ public class Livro {
     
     @NotNull(message = "A quantidade de páginas é obrigatória")
     @Positive(message = "A quantidade de páginas precisa ser um número positivo")
+    @JsonAlias("quantidade_paginas")
     private int quantidadePaginas;
     
     private int avaliacao;
@@ -40,6 +49,7 @@ public class Livro {
     
     @NotNull (message = "A página atual é obrigatória")
     @Positive(message = "A página atual precisa ser um número positivo")
+    @JsonAlias("pagina_atual")
     private int paginaAtual;
 
     @ManyToOne
@@ -47,5 +57,13 @@ public class Livro {
     
     @ManyToOne
     private Autor autor;
+
+    public EntityModel<Livro> toEntityModel(){
+        return EntityModel.of(this, 
+        linkTo(methodOn(LivroController.class).show(id)).withSelfRel(),
+        linkTo(methodOn(LivroController.class).delete(id)).withRel("delete"),
+        linkTo(methodOn(LivroController.class).index(null, null, Pageable.unpaged())).withRel("all")
+        );
+    }
 
 }

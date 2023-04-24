@@ -5,7 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,21 +31,21 @@ public class UsuarioController {
     UsuarioRepository repository;
 
     @GetMapping
-    public List<Usuario> index() {
-        return repository.findAll();
+    public List<EntityModel<Usuario>> index() {
+        return repository.findAll().stream().map(Usuario::toEntityModel).toList();
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> create(@RequestBody @Valid Usuario usuario) {
+    public ResponseEntity<EntityModel<Usuario>> create(@RequestBody @Valid Usuario usuario) {
         log.info("cadastrando usuário: " + usuario);
         repository.save(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
+        return ResponseEntity.created(usuario.toEntityModel().getRequiredLink("self").toUri()).body(usuario.toEntityModel());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Usuario> show(@PathVariable Long id) {
+    public EntityModel<Usuario> show(@PathVariable Long id) {
         log.info("buscando usuário com id: " + id);
-        return ResponseEntity.ok(getUsuario(id));
+        return getUsuario(id).toEntityModel();
     }
 
     @DeleteMapping("{id}")
@@ -56,12 +56,12 @@ public class UsuarioController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody @Valid Usuario usuario) {
+    public EntityModel<Usuario> update(@PathVariable Long id, @RequestBody @Valid Usuario usuario) {
         log.info("atualizando usuário com id: " + id);
         getUsuario(id);
         usuario.setId(id);
         repository.save(usuario);
-        return ResponseEntity.ok(usuario);
+        return usuario.toEntityModel();
     }
 
     private Usuario getUsuario(Long id){

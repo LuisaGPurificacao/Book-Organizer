@@ -5,7 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,21 +31,21 @@ public class AutorController {
     AutorRepository repository;
 
     @GetMapping
-    public List<Autor> index(){
-        return repository.findAll();
+    public List<EntityModel<Autor>> index(){
+        return repository.findAll().stream().map(Autor::toEntityModel).toList();
     }
     
     @PostMapping
-    public ResponseEntity<Autor> create(@RequestBody @Valid Autor autor){
+    public ResponseEntity<Object> create(@RequestBody @Valid Autor autor){
         log.info("cadastrando autor: " + autor);
         repository.save(autor);
-        return ResponseEntity.status(HttpStatus.CREATED).body(autor);
+        return ResponseEntity.created(autor.toEntityModel().getRequiredLink("self").toUri()).body(autor.toEntityModel());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Autor> show(@PathVariable Long id){
+    public EntityModel<Autor> show(@PathVariable Long id){
         log.info("buscando autor com id: " + id);
-        return ResponseEntity.ok(getAutor(id));
+        return getAutor(id).toEntityModel();
     }
 
     @DeleteMapping("{id}")
@@ -56,12 +56,12 @@ public class AutorController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Autor> update(@PathVariable Long id, @RequestBody @Valid Autor autor){
+    public EntityModel<Autor> update(@PathVariable Long id, @RequestBody @Valid Autor autor){
         log.info("atualizando autor com id: " + id);
         getAutor(id);
         autor.setId(id);
         repository.save(autor);
-        return ResponseEntity.ok(autor);
+        return autor.toEntityModel();
     }
 
     private Autor getAutor(Long id){
