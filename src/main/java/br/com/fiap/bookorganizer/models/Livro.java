@@ -18,6 +18,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 import br.com.fiap.bookorganizer.controllers.LivroController;
 
 @Data
@@ -37,6 +39,7 @@ public class Livro extends EntityModel<Livro> {
     
     @NotNull(message = "A quantidade de páginas é obrigatória")
     @Positive(message = "A quantidade de páginas precisa ser um número positivo")
+    @JsonAlias("quantidade_paginas")
     private int quantidadePaginas;
     
     private int avaliacao;
@@ -46,6 +49,7 @@ public class Livro extends EntityModel<Livro> {
     
     @NotNull (message = "A página atual é obrigatória")
     @Positive(message = "A página atual precisa ser um número positivo")
+    @JsonAlias("pagina_atual")
     private int paginaAtual;
 
     @ManyToOne

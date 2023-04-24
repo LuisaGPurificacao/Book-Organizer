@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.hateoas.EntityModel;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 import br.com.fiap.bookorganizer.controllers.UsuarioController;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -42,6 +44,7 @@ public class Usuario extends EntityModel<Usuario> {
     @Size(min = 8, max = 100, message = "A senha precisa ter no mínimo 8 caracteres e no máximo 100")
     private String senha;
 
+    @JsonAlias("foto_perfil")
     private String fotoPerfil;
 
     @Positive(message = "A meta precisa ser um número positivo")
