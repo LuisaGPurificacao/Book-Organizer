@@ -2,6 +2,9 @@ package br.com.fiap.bookorganizer.models;
 
 import java.util.List;
 
+import org.springframework.hateoas.EntityModel;
+
+import br.com.fiap.bookorganizer.controllers.UsuarioController;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -15,12 +18,13 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Usuario {
+public class Usuario extends EntityModel<Usuario> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,5 +49,13 @@ public class Usuario {
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Livro> livros;
+
+    public EntityModel<Usuario> toEntityModel(){
+        return EntityModel.of(this, 
+        linkTo(methodOn(UsuarioController.class).show(id)).withSelfRel(),
+        linkTo(methodOn(UsuarioController.class).delete(id)).withRel("delete"),
+        linkTo(methodOn(UsuarioController.class).index()).withRel("all")
+        );
+    }
 
 }
